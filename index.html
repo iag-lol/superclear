@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Registro de Aseo de Buses</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3a6ea5;
+            --primary-light: #ebf2fa;
+            --primary-dark: #2c5282;
+            --secondary-color: #004e98;
+            --accent-color: #0096c7;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border-radius: 8px;
+            --border-color: var(--gray-200);
+            --font-sm: 0.75rem;
+            --font-md: 0.875rem;
+            --font-lg: 1rem;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: var(--gray-800);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* Utility Classes */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .text-sm {
+            font-size: var(--font-sm);
+        }
+
+        .text-md {
+            font-size: var(--font-md);
+        }
+
+        .font-bold {
+            font-weight: 600;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-primary {
+            color: var(--primary-color);
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .h-full {
+            height: 100%;
+        }
+
+        .rounded {
+            border-radius: var(--border-radius);
+        }
+        
+        .shadow {
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Layout */
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 1rem 0;
+        }
+
+        /* App Layout */
+        .app-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+            z-index: 10;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .user-info h3 {
+            font-size: var(--font-lg);
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .user-info p {
+            font-size: var(--font-sm);
+            color: var(--gray-600);
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            gap: 0.5rem;
+        }
+
+        .nav-menu::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-item {
+            flex-shrink: 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-size: var(--font-sm);
+            color: var(--gray-700);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-link.active {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-link:hover {
+            background-color: var(--gray-100);
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            overflow-x: hidden;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Cards */
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 0.75rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: var(--font-md);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: var(--font-sm);
+            color: var(--gray-600);
+        }
+
+        .stat-pending {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .stat-pending .stat-value {
+            color: var(--warning-color);
+        }
+
+        .stat-completed {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .stat-completed .stat-value {
+            color: var(--success-color);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--font-sm);
+            color: var(--gray-700);
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-size: var(--font-sm);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+        }
+
+        .form-static {
+            padding: 0.5rem 0.75rem;
+            background-color: var(--gray-100);
+            border-radius: var(--border-radius);
+            font-size: var(--font-sm);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 0.75rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: var(--font-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--font-sm);
+        }
+
+        th, td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--gray-700);
+            background-color: var(--gray-100);
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-pending {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .badge-completed, .badge-realizado {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .badge-canceled, .badge-cancelado {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            margin-top: 1rem;
+        }
+
+        .page-item {
+            list-style: none;
+        }
+
+        .page-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: var(--border-radius);
+            font-size: var(--font-sm);
+            text-decoration: none;
+            color: var(--gray-700);
+            background-color: white;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .page-link:hover {
+            background-color: var(--gray-100);
+        }
+
+        .page-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Alerts */
+        .alert-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            max-width: 20rem;
+        }
+
+        .alert {
+            margin-bottom: 0.5rem;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            font-size: var(--font-sm);
+            box-shadow: var(--shadow-md);
+            animation: slideIn 0.3s ease forwards;
+            opacity: 0;
+            transform: translateX(1rem);
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .alert-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .alert-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .alert-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .alert-info {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        /* Loader */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader {
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 3px solid var(--gray-200);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Configuration Styles */
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .color-option {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: var(--gray-700);
+        }
+
+        /* Login */
+        .login-container {
+            max-width: 24rem;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .login-form {
+            margin-bottom: 1rem;
+        }
+
+        /* Mobile Bottom Nav */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+            z-index: 900;
+        }
+
+        .bottom-nav-list {
+            display: flex;
+            list-style: none;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+        }
+
+        .bottom-nav-item {
+            flex: 1;
+        }
+
+        .bottom-nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray-500);
+            font-size: 0.65rem;
+            padding: 0.25rem;
+        }
+
+        .bottom-nav-link i {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .bottom-nav-link.active {
+            color: var(--primary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .login-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .card-body {
+                padding: 0.75rem;
+            }
+
+            .bottom-nav {
+                display: block;
+            }
+
+            .app-container {
+                padding-bottom: 4rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .app-layout {
+                flex-direction: row;
+                gap: 1rem;
+            }
+
+            .sidebar {
+                width: 16rem;
+                height: auto;
+                margin-bottom: 0;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+            }
+
+            .nav-link {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer" class="alert-container"></div>
+
+    <!-- Login Section -->
+    <div id="loginSection">
+        <div class="container">
+            <div class="login-container">
+                <h2 class="login-title">Registro de Aseo de Buses</h2>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" id="nombre" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cargo" class="form-label">Cargo</label>
+                        <select id="cargo" class="form-control" required>
+                            <option value="" disabled selected>Seleccione su cargo</option>
+                            <option value="Cleaner">Cleaner</option>
+                            <option value="Conductor de Patio">Conductor de Patio</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="terminal" class="form-label">Terminal</label>
+                        <select id="terminal" class="form-control" required>
+                            <option value="" disabled selected>Seleccione su terminal</option>
+                            <option value="El Roble">El Roble</option>
+                            <option value="La Reina">La Reina</option>
+                            <option value="Maria Angelica">Maria Angelica</option>
+                            <option value="El Descanso">El Descanso</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label flex items-center gap-2">
+                            <input type="checkbox" id="recordarSesion"> Mantener sesión iniciada
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="app-container" style="display: none;">
+        <div class="container">
+            <div class="app-layout">
+                <!-- Sidebar with User Card -->
+                <div class="sidebar">
+                    <div class="user-card">
+                        <div id="userAvatar" class="user-avatar"></div>
+                        <div class="user-info">
+                            <h3 id="userName"></h3>
+                            <p id="userRole"></p>
+                            <p id="userTerminal" class="text-sm"></p>
+                        </div>
+                    </div>
+                    <nav>
+                        <ul class="nav-menu">
+                            <li class="nav-item">
+                                <a href="#principal" class="nav-link active" data-target="principal">
+                                    <i class="fas fa-home"></i> Principal
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tareasRealizadas" class="nav-link" data-target="tareasRealizadas">
+                                    <i class="fas fa-tasks"></i> Tareas Realizadas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#trabajosRealizados" class="nav-link" data-target="trabajosRealizados">
+                                    <i class="fas fa-clipboard-check"></i> Trabajos Realizados
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#solicitudes" class="nav-link" data-target="solicitudes">
+                                    <i class="fas fa-shopping-cart"></i> Solicitudes de Insumos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#configuracion" class="nav-link" data-target="configuracion">
+                                    <i class="fas fa-cog"></i> Configuración
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Content Area -->
+                <div class="content-area">
+                    <!-- Principal Tab -->
+                    <div id="principal" class="tab-content active">
+                        <!-- Stats Cards -->
+                        <div class="stats-container">
+                            <div class="stat-card stat-pending">
+                                <div id="countPendientes" class="stat-value">0</div>
+                                <div class="stat-label">Buses Pendientes</div>
+                            </div>
+                            <div class="stat-card stat-completed">
+                                <div id="countRealizados" class="stat-value">0</div>
+                                <div class="stat-label">Buses Realizados</div>
+                            </div>
+                        </div>
+
+                        <!-- Tareas Asignadas -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <span>Tareas Asignadas</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-container">
+                                    <table id="tableTareasAsignadas">
+                                        <thead>
+                                            <tr>
+                                                <th>PPU</th>
+                                                <th>Tarea</th>
+                                                <th>Estado</th>
+                                                <th>Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Contenido dinámico -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="paginationTareasAsignadas" class="pagination"></div>
+                            </div>
+                        </div>
+
+                        <!-- Registro Form -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <span>Registro de Trabajo</span>
+                            </div>
+                            <div class="card-body">
+                                <form id="registroForm">
+                                    <div class="form-group">
+                                        <label for="ppu" class="form-label">PPU</label>
+                                        <input type="text" id="ppu" class="form-control" required placeholder="XXXX00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tareaRealizada" class="form-label">Tarea Realizada</label>
+                                        <select id="tareaRealizada" class="form-control" required>
+                                            <!-- Opciones dinámicas según cargo -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Fecha y Hora</label>
+                                        <div id="fechaHora" class="form-static"></div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Registros Recientes -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span>Registros Recientes</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-container">
+                                    <table id="tableRegistros">
+                                        <thead>
+                                            <tr>
+                                                <th>PPU</th>
+                                                <th>Fecha</th>
+                                                <th>Trabajo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Contenido dinámico -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="paginationRegistros" class="pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tareas Realizadas Tab -->
+                    <div id="tareasRealizadas" class="tab-content">
+                        <div class="card">
+                            <div class="card-header">
+                                <span>Historial de Tareas</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-container">
+                                    <table id="historialTareas">
+                                        <thead>
+                                            <tr>
+                                                <th>PPU</th>
+                                                <th>Tarea</th>
+                                                <th>Estado</th>
+                                                <th>Fecha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Contenido dinámico -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="paginationHistorialTareas" class="pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trabajos Realizados Tab -->
+                    <div id="trabajosRealizados" class="tab-content">
+                        <div class="card">
+                            <div class="card-header">
+                                <span>Historial de Trabajos</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-container">
+                                    <table id="historialTrabajos">
+                                        <thead>
+                                            <tr>
+                                                <th>PPU</th>
+                                                <th>Trabajo</th>
+                                                <th>Fecha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Contenido dinámico -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="paginationHistorialTrabajos" class="pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Solicitudes Tab -->
+                    <div id="solicitudes" class="tab-content">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <span>Solicitud de Insumos</span>
+                            </div>
+                            <div class="card-body">
+                                <form id="solicitudForm">
+                                    <div class="form-group">
+                                        <label class="form-label">Nombre</label>
+                                        <div id="solicitudNombre" class="form-static"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="insumoSolicitado" class="form-label">Insumo a Solicitar</label>
+                                        <input type="text" id="insumoSolicitado" class="form-control" required placeholder="Nombre del insumo">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">Enviar Solicitud</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <span>Historial de Solicitudes</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-container">
+                                    <table id="historialSolicitudes">
+                                        <thead>
+                                            <tr>
+                                                <th>Insumo</th>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Contenido dinámico -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="paginationHistorialSolicitudes" class="pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración Tab -->
+                    <div id="configuracion" class="tab-content">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <span>Temas de Color</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="color-options">
+                                    <div class="color-option active" style="background-color: #3a6ea5;" data-color="default"></div>
+                                    <div class="color-option" style="background-color: #10b981;" data-color="green"></div>
+                                    <div class="color-option" style="background-color: #ef4444;" data-color="red"></div>
+                                    <div class="color-option" style="background-color: #f59e0b;" data-color="amber"></div>
+                                    <div class="color-option" style="background-color: #8b5cf6;" data-color="purple"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <span>Configuración de Alertas</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label flex items-center gap-2">
+                                        <input type="checkbox" id="alertSuccess" checked> Mostrar alertas de éxito
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label flex items-center gap-2">
+                                        <input type="checkbox" id="alertInfo" checked> Mostrar alertas informativas
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label flex items-center gap-2">
+                                        <input type="checkbox" id="alertWarning" checked> Mostrar alertas de advertencia
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label flex items-center gap-2">
+                                        <input type="checkbox" id="alertDanger" checked> Mostrar alertas de error
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="btnCerrarSesion" class="btn btn-danger btn-block">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Bottom Nav -->
+        <nav class="bottom-nav">
+            <ul class="bottom-nav-list">
+                <li class="bottom-nav-item">
+                    <a href="#principal" class="bottom-nav-link active" data-target="principal">
+                        <i class="fas fa-home"></i>
+                        <span>Principal</span>
+                    </a>
+                </li>
+                <li class="bottom-nav-item">
+                    <a href="#tareasRealizadas" class="bottom-nav-link" data-target="tareasRealizadas">
+                        <i class="fas fa-tasks"></i>
+                        <span>Tareas</span>
+                    </a>
+                </li>
+                <li class="bottom-nav-item">
+                    <a href="#trabajosRealizados" class="bottom-nav-link" data-target="trabajosRealizados">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Trabajos</span>
+                    </a>
+                </li>
+                <li class="bottom-nav-item">
+                    <a href="#solicitudes" class="bottom-nav-link" data-target="solicitudes">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Insumos</span>
+                    </a>
+                </li>
+                <li class="bottom-nav-item">
+                    <a href="#configuracion" class="bottom-nav-link" data-target="configuracion">
+                        <i class="fas fa-cog"></i>
+                        <span>Config</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Load Supabase from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // Inicialización de Supabase
+        const SUPABASE_URL = 'https://tcmtxvuucjttngcazgff.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjbXR4dnV1Y2p0dG5nY2F6Z2ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3MjUwMDEsImV4cCI6MjA1NjMwMTAwMX0.2WcIjMUEhSM6j9kYpbsYArQocZdHx86k7wXk-NyjIs0';
+        const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Variables globales
+        let currentUser = null;
+        let tareasPaginaActual = 1;
+        let registrosPaginaActual = 1;
+        let historialTareasPaginaActual = 1;
+        let historialTrabajosPaginaActual = 1;
+        let historialSolicitudesPaginaActual = 1;
+        let itemsPorPagina = 10;
+
+        // Configuración de tema
+        const colorThemes = {
+            default: {
+                primaryColor: '#3a6ea5',
+                primaryDark: '#2c5282',
+                accentColor: '#0096c7'
+            },
+            green: {
+                primaryColor: '#10b981',
+                primaryDark: '#059669',
+                accentColor: '#34d399'
+            },
+            red: {
+                primaryColor: '#ef4444',
+                primaryDark: '#dc2626',
+                accentColor: '#f87171'
+            },
+            amber: {
+                primaryColor: '#f59e0b',
+                primaryDark: '#d97706',
+                accentColor: '#fbbf24'
+            },
+            purple: {
+                primaryColor: '#8b5cf6',
+                primaryDark: '#7c3aed',
+                accentColor: '#a78bfa'
+            }
+        };
+
+        // Elementos DOM
+        const loader = document.getElementById('loader');
+        const loginSection = document.getElementById('loginSection');
+        const mainApp = document.getElementById('mainApp');
+        const loginForm = document.getElementById('loginForm');
+        const btnCerrarSesion = document.getElementById('btnCerrarSesion');
+        const navLinks = document.querySelectorAll('.nav-link, .bottom-nav-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const countPendientes = document.getElementById('countPendientes');
+        const countRealizados = document.getElementById('countRealizados');
+        const colorOptions = document.querySelectorAll('.color-option');
+        const registroForm = document.getElementById('registroForm');
+        const solicitudForm = document.getElementById('solicitudForm');
+        const alertCheckboxes = {
+            success: document.getElementById('alertSuccess'),
+            info: document.getElementById('alertInfo'),
+            warning: document.getElementById('alertWarning'),
+            danger: document.getElementById('alertDanger')
+        };
+
+        // Inicialización de la aplicación
+        document.addEventListener('DOMContentLoaded', init);
+
+        async function init() {
+            try {
+                // Cargar configuración desde localStorage
+                loadConfig();
+                
+                // Verificar si hay una sesión guardada
+                await checkSession();
+                
+                // Event listeners
+                loginForm.addEventListener('submit', handleLogin);
+                btnCerrarSesion.addEventListener('click', handleLogout);
+                registroForm.addEventListener('submit', handleRegistro);
+                solicitudForm.addEventListener('submit', handleSolicitud);
+                
+                // Event listeners para navegación
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = link.getAttribute('data-target');
+                        activateTab(targetId);
+                    });
+                });
+                
+                // Event listeners para opciones de color
+                colorOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        const color = option.getAttribute('data-color');
+                        applyColorTheme(color);
+                        saveConfig();
+                        
+                        // Actualizar UI
+                        colorOptions.forEach(opt => opt.classList.remove('active'));
+                        option.classList.add('active');
+                        
+                        showAlert('Tema aplicado correctamente', 'success');
+                    });
+                });
+                
+                // Actualizar fecha y hora
+                updateDateTime();
+                setInterval(updateDateTime, 60000); // Actualizar cada minuto
+            } catch (error) {
+                console.error('Error en inicialización:', error);
+                showAlert('Error al inicializar la aplicación', 'danger');
+            } finally {
+                // Ocultar loader después de inicialización
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        // Verificar sesión guardada
+        async function checkSession() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    
+                    // Verificar si el usuario existe en Supabase
+                    const { data, error } = await supabase
+                        .from('usuarios')
+                        .select('*')
+                        .eq('id', currentUser.id)
+                        .single();
+                    
+                    if (error) throw error;
+                    
+                    if (data) {
+                        // Actualizar datos del usuario
+                        currentUser = {
+                            id: data.id,
+                            nombre: data.nombre,
+                            cargo: data.cargo,
+                            terminal: data.terminal
+                        };
+                        
+                        setUserInfo(currentUser);
+                        showMainApp();
+                        await loadUserData();
+                    } else {
+                        // Usuario no encontrado, eliminar sesión
+                        localStorage.removeItem('currentUser');
+                        throw new Error('Sesión expirada o inválida');
+                    }
+                } catch (error) {
+                    console.error('Error al verificar sesión:', error);
+                    localStorage.removeItem('currentUser');
+                    showAlert('Sesión expirada, por favor inicie sesión nuevamente', 'warning');
+                }
+            }
+        }
+
+        // Iniciar sesión
+        async function handleLogin(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value.trim();
+            const cargo = document.getElementById('cargo').value;
+            const terminal = document.getElementById('terminal').value;
+            const recordar = document.getElementById('recordarSesion').checked;
+            
+            if (!nombre || !cargo || !terminal) {
+                showAlert('Por favor complete todos los campos', 'warning');
+                return;
+            }
+            
+            loader.style.display = 'flex';
+            
+            try {
+                // Buscar o crear usuario en Supabase
+                let { data: usuarios, error } = await supabase
+                    .from('usuarios')
+                    .select('*')
+                    .eq('nombre', nombre)
+                    .eq('cargo', cargo);
+                
+                if (error) throw error;
+                
+                let userId;
+                
+                if (usuarios && usuarios.length > 0) {
+                    // Usuario existe, actualizar terminal
+                    userId = usuarios[0].id;
+                    
+                    const { error: updateError } = await supabase
+                        .from('usuarios')
+                        .update({ terminal: terminal })
+                        .eq('id', userId);
+                    
+                    if (updateError) throw updateError;
+                } else {
+                    // Crear nuevo usuario
+                    const { data: newUser, error: insertError } = await supabase
+                        .from('usuarios')
+                        .insert([{ nombre, cargo, terminal }])
+                        .select();
+                    
+                    if (insertError) throw insertError;
+                    
+                    if (!newUser || newUser.length === 0) {
+                        throw new Error('Error al crear usuario');
+                    }
+                    
+                    userId = newUser[0].id;
+                }
+                
+                // Guardar datos de usuario
+                currentUser = {
+                    id: userId,
+                    nombre: nombre,
+                    cargo: cargo,
+                    terminal: terminal
+                };
+                
+                if (recordar) {
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                }
+                
+                setUserInfo(currentUser);
+                showMainApp();
+                await loadUserData();
+                
+                showAlert('Sesión iniciada correctamente', 'success');
+            } catch (error) {
+                console.error('Error al iniciar sesión:', error);
+                showAlert('Error al iniciar sesión: ' + error.message, 'danger');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Cerrar sesión
+        function handleLogout() {
+            loader.style.display = 'flex';
+            
+            setTimeout(() => {
+                localStorage.removeItem('currentUser');
+                currentUser = null;
+                loginSection.style.display = 'block';
+                mainApp.style.display = 'none';
+                resetForms();
+                loader.style.display = 'none';
+            }, 500);
+        }
+
+        // Configurar información del usuario
+        function setUserInfo(user) {
+            const initials = getInitials(user.nombre);
+            
+            // Avatar y datos de usuario
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('userName').textContent = user.nombre;
+            document.getElementById('userRole').textContent = user.cargo;
+            document.getElementById('userTerminal').textContent = user.terminal;
+            
+            // Campo en formulario de solicitudes
+            document.getElementById('solicitudNombre').textContent = user.nombre;
+            
+            // Configurar opciones de tarea según el cargo
+            const selectTarea = document.getElementById('tareaRealizada');
+            selectTarea.innerHTML = '';
+            
+            if (user.cargo === 'Cleaner') {
+                const opciones = ['Barrido', 'Barrido trapeado', 'Full por inspección', 'Full a solicitud', 'Full en seco'];
+                opciones.forEach(opcion => {
+                    const option = document.createElement('option');
+                    option.value = opcion;
+                    option.textContent = opcion;
+                    selectTarea.appendChild(option);
+                });
+            } else if (user.cargo === 'Conductor de Patio') {
+                const option = document.createElement('option');
+                option.value = 'Lavado Express';
+                option.textContent = 'Lavado Express';
+                selectTarea.appendChild(option);
+            }
+        }
+
+        // Obtener iniciales del nombre
+        function getInitials(name) {
+            return name
+                .split(' ')
+                .map(word => word.charAt(0))
+                .join('')
+                .toUpperCase();
+        }
+
+        // Mostrar la aplicación principal
+        function showMainApp() {
+            loginSection.style.display = 'none';
+            mainApp.style.display = 'block';
+        }
+
+        // Resetear formularios
+        function resetForms() {
+            document.getElementById('loginForm').reset();
+            document.getElementById('registroForm').reset();
+            document.getElementById('solicitudForm').reset();
+        }
+
+        // Cargar datos del usuario
+        async function loadUserData() {
+            loader.style.display = 'flex';
+            
+            try {
+                // Cargar tareas asignadas
+                const { data: tareas, error: tareasError } = await supabase
+                    .from('tareas_asignadas')
+                    .select('*')
+                    .eq('terminal', currentUser.terminal)
+                    .order('created_at', { ascending: false });
+                
+                if (tareasError) throw tareasError;
+                
+                // Cargar registros de trabajo
+                const { data: registros, error: registrosError } = await supabase
+                    .from('registros_trabajo')
+                    .select('*')
+                    .eq('usuario_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+                
+                if (registrosError) throw registrosError;
+                
+                // Cargar solicitudes de insumos
+                const { data: solicitudes, error: solicitudesError } = await supabase
+                    .from('solicitudes_insumos')
+                    .select('*')
+                    .eq('usuario_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+                
+                if (solicitudesError) throw solicitudesError;
+                
+                // Obtener contadores
+                await updateCounters();
+                
+                // Renderizar datos
+                renderTareasAsignadas(tareas || []);
+                renderRegistros(registros || []);
+                renderHistorialTareas(tareas || []);
+                renderHistorialTrabajos(registros || []);
+                renderHistorialSolicitudes(solicitudes || []);
+            } catch (error) {
+                console.error('Error al cargar datos:', error);
+                showAlert('Error al cargar datos: ' + error.message, 'danger');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Renderizar tareas asignadas
+        function renderTareasAsignadas(tareas) {
+            const tbody = document.querySelector('#tableTareasAsignadas tbody');
+            tbody.innerHTML = '';
+            
+            // Solo mostrar tareas pendientes en esta tabla
+            const tareasPendientes = tareas.filter(tarea => tarea.estado === 'Pendiente');
+            const paginatedTareas = paginateData(tareasPendientes, tareasPaginaActual, itemsPorPagina);
+            
+            if (paginatedTareas.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td colspan="4" class="text-center">No hay tareas pendientes</td>`;
+                tbody.appendChild(tr);
+            } else {
+                paginatedTareas.forEach(tarea => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${tarea.ppu}</td>
+                        <td>${tarea.tarea}</td>
+                        <td>
+                            <span class="badge badge-${tarea.estado.toLowerCase()}">${tarea.estado}</span>
+                        </td>
+                        <td>
+                            <select class="form-control status-select" data-id="${tarea.id}">
+                                <option value="Pendiente" ${tarea.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                                <option value="Realizado" ${tarea.estado === 'Realizado' ? 'selected' : ''}>Realizado</option>
+                                <option value="Cancelado" ${tarea.estado === 'Cancelado' ? 'selected' : ''}>Cancelado</option>
+                            </select>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                
+                // Agregar event listeners a los selectores de estado
+                document.querySelectorAll('.status-select').forEach(select => {
+                    select.addEventListener('change', handleTareaStatusChange);
+                });
+            }
+            
+            renderPagination('paginationTareasAsignadas', tareasPendientes.length, tareasPaginaActual, (page) => {
+                tareasPaginaActual = page;
+                renderTareasAsignadas(tareas);
+            });
+        }
+
+        // Renderizar registros
+        function renderRegistros(registros) {
+            const tbody = document.querySelector('#tableRegistros tbody');
+            tbody.innerHTML = '';
+            
+            const paginatedRegistros = paginateData(registros, registrosPaginaActual, itemsPorPagina);
+            
+            if (paginatedRegistros.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td colspan="3" class="text-center">No hay registros</td>`;
+                tbody.appendChild(tr);
+            } else {
+                paginatedRegistros.forEach(registro => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${registro.ppu}</td>
+                        <td>${registro.fecha}</td>
+                        <td>${registro.trabajo}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+            
+            renderPagination('paginationRegistros', registros.length, registrosPaginaActual, (page) => {
+                registrosPaginaActual = page;
+                renderRegistros(registros);
+            });
+        }
+
+        // Renderizar historial de tareas
+        function renderHistorialTareas(tareas) {
+            const tbody = document.querySelector('#historialTareas tbody');
+            tbody.innerHTML = '';
+            
+            // Filtrar tareas completadas o canceladas
+            const completedTareas = tareas.filter(tarea => 
+                tarea.estado === 'Realizado' || tarea.estado === 'Cancelado'
+            );
+            
+            const paginatedTareas = paginateData(completedTareas, historialTareasPaginaActual, itemsPorPagina);
+            
+            if (paginatedTareas.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td colspan="4" class="text-center">No hay tareas completadas</td>`;
+                tbody.appendChild(tr);
+            } else {
+                paginatedTareas.forEach(tarea => {
+                    const tr = document.createElement('tr');
+                    const fecha = new Date(tarea.updated_at).toLocaleDateString('es-CL');
+                    
+                    tr.innerHTML = `
+                        <td>${tarea.ppu}</td>
+                        <td>${tarea.tarea}</td>
+                        <td><span class="badge badge-${tarea.estado.toLowerCase()}">${tarea.estado}</span></td>
+                        <td>${fecha}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+            
+            renderPagination('paginationHistorialTareas', completedTareas.length, historialTareasPaginaActual, (page) => {
+                historialTareasPaginaActual = page;
+                renderHistorialTareas(tareas);
+            });
+        }
+
+        // Renderizar historial de trabajos
+        function renderHistorialTrabajos(registros) {
+            const tbody = document.querySelector('#historialTrabajos tbody');
+            tbody.innerHTML = '';
+            
+            const paginatedTrabajos = paginateData(registros, historialTrabajosPaginaActual, itemsPorPagina);
+            
+            if (paginatedTrabajos.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td colspan="3" class="text-center">No hay trabajos realizados</td>`;
+                tbody.appendChild(tr);
+            } else {
+                paginatedTrabajos.forEach(registro => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${registro.ppu}</td>
+                        <td>${registro.trabajo}</td>
+                        <td>${registro.fecha}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+            
+            renderPagination('paginationHistorialTrabajos', registros.length, historialTrabajosPaginaActual, (page) => {
+                historialTrabajosPaginaActual = page;
+                renderHistorialTrabajos(registros);
+            });
+        }
+
+        // Renderizar historial de solicitudes
+        function renderHistorialSolicitudes(solicitudes) {
+            const tbody = document.querySelector('#historialSolicitudes tbody');
+            tbody.innerHTML = '';
+            
+            const paginatedSolicitudes = paginateData(solicitudes, historialSolicitudesPaginaActual, itemsPorPagina);
+            
+            if (paginatedSolicitudes.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td colspan="3" class="text-center">No hay solicitudes</td>`;
+                tbody.appendChild(tr);
+            } else {
+                paginatedSolicitudes.forEach(solicitud => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${solicitud.insumo}</td>
+                        <td>${solicitud.fecha}</td>
+                        <td><span class="badge badge-${solicitud.estado.toLowerCase()}">${solicitud.estado}</span></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+            
+            renderPagination('paginationHistorialSolicitudes', solicitudes.length, historialSolicitudesPaginaActual, (page) => {
+                historialSolicitudesPaginaActual = page;
+                renderHistorialSolicitudes(solicitudes);
+            });
+        }
+
+        // Manejar cambio de estado de tarea
+        async function handleTareaStatusChange(e) {
+            const tareaId = e.target.getAttribute('data-id');
+            const nuevoEstado = e.target.value;
+            
+            loader.style.display = 'flex';
+            
+            try {
+                // Actualizar en Supabase
+                const { error } = await supabase
+                    .from('tareas_asignadas')
+                    .update({ 
+                        estado: nuevoEstado,
+                        updated_at: new Date()
+                    })
+                    .eq('id', tareaId);
+                
+                if (error) throw error;
+                
+                // Si se marca como realizado, agregar a registros
+                if (nuevoEstado === 'Realizado') {
+                    // Obtener la tarea
+                    const { data: tarea, error: tareaError } = await supabase
+                        .from('tareas_asignadas')
+                        .select('*')
+                        .eq('id', tareaId)
+                        .single();
+                    
+                    if (tareaError) throw tareaError;
+                    
+                    if (tarea) {
+                        const ahora = new Date();
+                        const fechaFormateada = formatDate(ahora);
+                        
+                        // Insertar en registros_trabajo
+                        const { error: regError } = await supabase
+                            .from('registros_trabajo')
+                            .insert([
+                                { 
+                                    ppu: tarea.ppu, 
+                                    trabajo: tarea.tarea, 
+                                    fecha: fechaFormateada,
+                                    usuario_id: currentUser.id,
+                                    nombre_usuario: currentUser.nombre,
+                                    terminal: currentUser.terminal
+                                }
+                            ]);
+                        
+                        if (regError) throw regError;
+                    }
+                }
+                
+                // Recargar datos
+                await loadUserData();
+                
+                showAlert(`Tarea actualizada a ${nuevoEstado}`, 'success');
+            } catch (error) {
+                console.error('Error al actualizar tarea:', error);
+                showAlert('Error al actualizar tarea: ' + error.message, 'danger');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Manejar registro de trabajo
+        async function handleRegistro(e) {
+            e.preventDefault();
+            
+            const ppu = document.getElementById('ppu').value.trim().toUpperCase();
+            const tareaRealizada = document.getElementById('tareaRealizada').value;
+            
+            if (!ppu || !tareaRealizada) {
+                showAlert('Por favor complete todos los campos', 'warning');
+                return;
+            }
+            
+            // Validar formato de PPU (ejemplo: ABCD12)
+            const ppuRegex = /^[A-Z]{2,4}\d{2,3}$/;
+            if (!ppuRegex.test(ppu)) {
+                showAlert('Formato de PPU inválido. Debe ser como ABCD12', 'danger');
+                return;
+            }
+            
+            loader.style.display = 'flex';
+            
+            try {
+                const ahora = new Date();
+                const fechaFormateada = formatDate(ahora);
+                
+                // Insertar en Supabase
+                const { error } = await supabase
+                    .from('registros_trabajo')
+                    .insert([
+                        { 
+                            ppu: ppu, 
+                            trabajo: tareaRealizada, 
+                            fecha: fechaFormateada,
+                            usuario_id: currentUser.id,
+                            nombre_usuario: currentUser.nombre,
+                            terminal: currentUser.terminal
+                        }
+                    ]);
+                
+                if (error) throw error;
+                
+                // Recargar datos
+                await loadUserData();
+                
+                // Limpiar formulario
+                document.getElementById('registroForm').reset();
+                
+                // Reconfigurar opciones según cargo
+                setUserInfo(currentUser);
+                
+                showAlert('Trabajo registrado correctamente', 'success');
+            } catch (error) {
+                console.error('Error al registrar trabajo:', error);
+                showAlert('Error al registrar trabajo: ' + error.message, 'danger');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Manejar solicitud de insumos
+        async function handleSolicitud(e) {
+            e.preventDefault();
+            
+            const insumo = document.getElementById('insumoSolicitado').value.trim();
+            
+            if (!insumo) {
+                showAlert('Por favor ingrese el nombre del insumo', 'warning');
+                return;
+            }
+            
+            loader.style.display = 'flex';
+            
+            try {
+                const ahora = new Date();
+                const fechaFormateada = formatDate(ahora);
+                
+                // Insertar en Supabase
+                const { error } = await supabase
+                    .from('solicitudes_insumos')
+                    .insert([
+                        { 
+                            insumo: insumo,
+                            usuario_id: currentUser.id,
+                            nombre_usuario: currentUser.nombre,
+                            fecha: fechaFormateada,
+                            estado: 'Pendiente'
+                        }
+                    ]);
+                
+                if (error) throw error;
+                
+                // Recargar datos
+                const { data: solicitudes } = await supabase
+                    .from('solicitudes_insumos')
+                    .select('*')
+                    .eq('usuario_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+                
+                renderHistorialSolicitudes(solicitudes || []);
+                
+                // Limpiar formulario
+                document.getElementById('solicitudForm').reset();
+                
+                showAlert('Solicitud enviada correctamente', 'success');
+            } catch (error) {
+                console.error('Error al enviar solicitud:', error);
+                showAlert('Error al enviar solicitud: ' + error.message, 'danger');
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // Actualizar contadores
+        async function updateCounters() {
+            try {
+                // Contar tareas pendientes en el terminal
+                const { count: tareasPendientes, error: countError } = await supabase
+                    .from('tareas_asignadas')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('terminal', currentUser.terminal)
+                    .eq('estado', 'Pendiente');
+                
+                if (countError) throw countError;
+                
+                // Contar trabajos realizados por el usuario
+                const { count: trabajosRealizados, error: workCountError } = await supabase
+                    .from('registros_trabajo')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('usuario_id', currentUser.id);
+                
+                if (workCountError) throw workCountError;
+                
+                // Actualizar contadores
+                countPendientes.textContent = tareasPendientes || 0;
+                countRealizados.textContent = trabajosRealizados || 0;
+            } catch (error) {
+                console.error('Error al actualizar contadores:', error);
+            }
+        }
+
+        // Activar pestaña
+        function activateTab(targetId) {
+            // Desactivar todas las pestañas y contenidos
+            navLinks.forEach(link => link.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Activar la pestaña seleccionada
+            document.querySelectorAll(`[data-target="${targetId}"]`).forEach(element => {
+                element.classList.add('active');
+            });
+            
+            // Activar el contenido seleccionado
+            document.getElementById(targetId).classList.add('active');
+        }
+
+        // Actualizar fecha y hora
+        function updateDateTime() {
+            const fechaHora = document.getElementById('fechaHora');
+            const ahora = new Date();
+            fechaHora.textContent = formatDateTime(ahora);
+        }
+
+        // Formatear fecha (dd-mm-yy)
+        function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = String(date.getFullYear()).slice(2);
+            return `${day}-${month}-${year}`;
+        }
+
+        // Formatear fecha y hora (dd-mm-yy / hh:mm)
+        function formatDateTime(date) {
+            const formattedDate = formatDate(date);
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${formattedDate} / ${hours}:${minutes}`;
+        }
+
+        // Mostrar alerta
+        function showAlert(message, type) {
+            // Verificar configuración de alertas
+            if (type && !alertCheckboxes[type].checked) {
+                return;
+            }
+            
+            const alertContainer = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            alertContainer.appendChild(alertDiv);
+            
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                alertDiv.style.opacity = '0';
+                alertDiv.style.transition = 'opacity 0.5s';
+                
+                setTimeout(() => {
+                    alertContainer.removeChild(alertDiv);
+                }, 500);
+            }, 3000);
+        }
+
+        // Funciones de paginación
+        function paginateData(data, currentPage, itemsPerPage) {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            return data.slice(startIndex, endIndex);
+        }
+
+        function renderPagination(containerId, totalItems, currentPage, callback) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            const totalPages = Math.ceil(totalItems / itemsPorPagina);
+            
+            if (totalPages <= 1) {
+                return;
+            }
+            
+            // Crear lista
+            const ul = document.createElement('ul');
+            ul.className = 'pagination';
+            
+            // Botón anterior
+            const prevLi = document.createElement('li');
+            prevLi.className = 'page-item';
+            const prevLink = document.createElement('a');
+            prevLink.className = 'page-link';
+            prevLink.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevLink.href = '#';
+            prevLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    callback(currentPage - 1);
+                }
+            });
+            prevLi.appendChild(prevLink);
+            ul.appendChild(prevLi);
+            
+            // Páginas (mostrar máximo 5)
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            // Ajustar si estamos cerca del final
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const li = document.createElement('li');
+                li.className = 'page-item';
+                const link = document.createElement('a');
+                link.className = 'page-link';
+                if (currentPage === i) {
+                    link.classList.add('active');
+                }
+                link.textContent = i;
+                link.href = '#';
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    callback(i);
+                });
+                li.appendChild(link);
+                ul.appendChild(li);
+            }
+            
+            // Botón siguiente
+            const nextLi = document.createElement('li');
+            nextLi.className = 'page-item';
+            const nextLink = document.createElement('a');
+            nextLink.className = 'page-link';
+            nextLink.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextLink.href = '#';
+            nextLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) {
+                    callback(currentPage + 1);
+                }
+            });
+            nextLi.appendChild(nextLink);
+            ul.appendChild(nextLi);
+            
+            container.appendChild(ul);
+        }
+
+        // Funciones de configuración
+        function loadConfig() {
+            const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            
+            // Cargar tema de color
+            if (config.colorTheme) {
+                applyColorTheme(config.colorTheme);
+                
+                // Activar la opción correspondiente
+                colorOptions.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.getAttribute('data-color') === config.colorTheme) {
+                        option.classList.add('active');
+                    }
+                });
+            }
+            
+            // Cargar configuración de alertas
+            if (config.alerts) {
+                Object.keys(config.alerts).forEach(type => {
+                    if (alertCheckboxes[type]) {
+                        alertCheckboxes[type].checked = config.alerts[type];
+                    }
+                });
+            }
+        }
+
+        function saveConfig() {
+            const config = {
+                colorTheme: document.querySelector('.color-option.active').getAttribute('data-color'),
+                alerts: {
+                    success: alertCheckboxes.success.checked,
+                    info: alertCheckboxes.info.checked,
+                    warning: alertCheckboxes.warning.checked,
+                    danger: alertCheckboxes.danger.checked
+                }
+            };
+            
+            localStorage.setItem('appConfig', JSON.stringify(config));
+        }
+
+        function applyColorTheme(themeName) {
+            const theme = colorThemes[themeName];
+            
+            if (theme) {
+                document.documentElement.style.setProperty('--primary-color', theme.primaryColor);
+                document.documentElement.style.setProperty('--primary-dark', theme.primaryDark);
+                document.documentElement.style.setProperty('--accent-color', theme.accentColor);
+            }
+        }
+
+        // Event listeners para checkboxes de configuración
+        Object.values(alertCheckboxes).forEach(checkbox => {
+            checkbox.addEventListener('change', saveConfig);
+        });
+    </script>
+</body>
+</html>
