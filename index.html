@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,7 +130,7 @@
         .rounded {
             border-radius: var(--border-radius);
         }
-        
+
         .shadow {
             box-shadow: var(--shadow-md);
         }
@@ -253,8 +254,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* Cards */
@@ -414,7 +420,8 @@
             font-size: var(--font-sm);
         }
 
-        th, td {
+        th,
+        td {
             padding: 0.5rem;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
@@ -442,12 +449,14 @@
             color: white;
         }
 
-        .badge-completed, .badge-realizado {
+        .badge-completed,
+        .badge-realizado {
             background-color: var(--success-color);
             color: white;
         }
 
-        .badge-canceled, .badge-cancelado {
+        .badge-canceled,
+        .badge-cancelado {
             background-color: var(--danger-color);
             color: white;
         }
@@ -560,7 +569,230 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        /* Estilos para el botón */
+        .btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--gray-500);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--gray-600);
+        }
+
+        /* Estilos para la ventana modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .close-modal {
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: white;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .close-modal:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .contador-container {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        #contadorPendientes {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--warning-color);
+        }
+
+        /* Campo de búsqueda */
+        .search-container {
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Estilos para la tabla */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid var(--gray-200);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        thead {
+            background-color: var(--gray-100);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.675rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-pendiente {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .modal-content {
+                width: 95%;
+            }
+
+            th,
+            td {
+                padding: 0.5rem;
+            }
+
+            .modal-header h2 {
+                font-size: 1.125rem;
+            }
         }
 
         /* Configuration Styles */
@@ -697,6 +929,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Loader -->
     <div id="loader" class="loader-overlay">
@@ -831,6 +1064,50 @@
                             </div>
                         </div>
 
+                        <!-- Botón para mostrar la ventana flotante -->
+                        <button id="btnMostrarFlotaPendiente" class="btn btn-primary">
+                            <i class="fas fa-bus"></i> Ver Flota Pendiente
+                        </button>
+
+                        <!-- Ventana flotante (modal) -->
+                        <div id="modalFlotaPendiente" class="modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2>Flota Pendiente de Aseo</h2>
+                                    <span class="close-modal">&times;</span>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="search-container">
+                                        <input type="text" id="buscarPPU" class="search-input"
+                                            placeholder="Buscar PPU...">
+                                    </div>
+                                    <div class="table-container">
+                                        <table id="tablaFlotaPendiente">
+                                            <thead>
+                                                <tr>
+                                                    <th>PPU</th>
+                                                    <th>Estado</th>
+                                                    <th>Última limpieza</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Se llenará dinámicamente -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="sinResultados" class="hidden">
+                                        <p>No hay buses pendientes de aseo.</p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="contador-container">
+                                        <span id="contadorPendientes">0</span> buses pendientes
+                                    </div>
+                                    <button id="btnCerrarModal" class="btn btn-secondary">Cerrar</button>
+                                </div>
+                            </div>
+                        </div><br><br>
+
                         <!-- Registro Form -->
                         <div class="card mb-4">
                             <div class="card-header">
@@ -949,7 +1226,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="insumoSolicitado" class="form-label">Insumo a Solicitar</label>
-                                        <input type="text" id="insumoSolicitado" class="form-control" required placeholder="Nombre del insumo">
+                                        <input type="text" id="insumoSolicitado" class="form-control" required
+                                            placeholder="Nombre del insumo">
                                     </div>
                                     <button type="submit" class="btn btn-primary btn-block">Enviar Solicitud</button>
                                 </form>
@@ -988,11 +1266,15 @@
                             </div>
                             <div class="card-body">
                                 <div class="color-options">
-                                    <div class="color-option active" style="background-color: #3a6ea5;" data-color="default"></div>
-                                    <div class="color-option" style="background-color: #10b981;" data-color="green"></div>
+                                    <div class="color-option active" style="background-color: #3a6ea5;"
+                                        data-color="default"></div>
+                                    <div class="color-option" style="background-color: #10b981;" data-color="green">
+                                    </div>
                                     <div class="color-option" style="background-color: #ef4444;" data-color="red"></div>
-                                    <div class="color-option" style="background-color: #f59e0b;" data-color="amber"></div>
-                                    <div class="color-option" style="background-color: #8b5cf6;" data-color="purple"></div>
+                                    <div class="color-option" style="background-color: #f59e0b;" data-color="amber">
+                                    </div>
+                                    <div class="color-option" style="background-color: #8b5cf6;" data-color="purple">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1138,19 +1420,19 @@
             try {
                 // Inicializar Supabase
                 initSupabase();
-                
+
                 // Cargar configuración desde localStorage
                 loadConfig();
-                
+
                 // Verificar si hay una sesión guardada
                 await checkSession();
-                
+
                 // Event listeners
                 loginForm.addEventListener('submit', handleLogin);
                 btnCerrarSesion.addEventListener('click', handleLogout);
                 registroForm.addEventListener('submit', handleRegistro);
                 solicitudForm.addEventListener('submit', handleSolicitud);
-                
+
                 // Event listeners para navegación
                 navLinks.forEach(link => {
                     link.addEventListener('click', (e) => {
@@ -1159,22 +1441,22 @@
                         activateTab(targetId);
                     });
                 });
-                
+
                 // Event listeners para opciones de color
                 colorOptions.forEach(option => {
                     option.addEventListener('click', () => {
                         const color = option.getAttribute('data-color');
                         applyColorTheme(color);
                         saveConfig();
-                        
+
                         // Actualizar UI
                         colorOptions.forEach(opt => opt.classList.remove('active'));
                         option.classList.add('active');
-                        
+
                         showAlert('Tema aplicado correctamente', 'success');
                     });
                 });
-                
+
                 // Actualizar fecha y hora
                 updateDateTime();
                 setInterval(updateDateTime, 60000); // Actualizar cada minuto
@@ -1193,7 +1475,7 @@
         function initSupabase() {
             const SUPABASE_URL = 'https://tcmtxvuucjttngcazgff.supabase.co';
             const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjbXR4dnV1Y2p0dG5nY2F6Z2ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3MjUwMDEsImV4cCI6MjA1NjMwMTAwMX0.2WcIjMUEhSM6j9kYpbsYArQocZdHx86k7wXk-NyjIs0';
-            
+
             // Crear cliente Supabase usando la API global expuesta por el CDN
             supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         }
@@ -1204,16 +1486,16 @@
             if (savedUser) {
                 try {
                     currentUser = JSON.parse(savedUser);
-                    
+
                     // Verificar si el usuario existe en Supabase
                     const { data, error } = await supabaseClient
                         .from('usuarios')
                         .select('*')
                         .eq('id', currentUser.id)
                         .single();
-                    
+
                     if (error) throw error;
-                    
+
                     if (data) {
                         // Actualizar datos del usuario
                         currentUser = {
@@ -1222,7 +1504,7 @@
                             cargo: data.cargo,
                             terminal: data.terminal
                         };
-                        
+
                         setUserInfo(currentUser);
                         showMainApp();
                         await loadUserData();
@@ -1246,14 +1528,14 @@
             const cargo = document.getElementById('cargo').value;
             const terminal = document.getElementById('terminal').value;
             const recordar = document.getElementById('recordarSesion').checked;
-            
+
             if (!nombre || !cargo || !terminal) {
                 showAlert('Por favor complete todos los campos', 'warning');
                 return;
             }
-            
+
             loader.style.display = 'flex';
-            
+
             try {
                 // Buscar o crear usuario en Supabase
                 let { data: usuarios, error } = await supabaseClient
@@ -1261,20 +1543,20 @@
                     .select('*')
                     .eq('nombre', nombre)
                     .eq('cargo', cargo);
-                
+
                 if (error) throw error;
-                
+
                 let userId;
-                
+
                 if (usuarios && usuarios.length > 0) {
                     // Usuario existe, actualizar terminal
                     userId = usuarios[0].id;
-                    
+
                     const { error: updateError } = await supabaseClient
                         .from('usuarios')
                         .update({ terminal: terminal })
                         .eq('id', userId);
-                    
+
                     if (updateError) throw updateError;
                 } else {
                     // Crear nuevo usuario
@@ -1282,16 +1564,16 @@
                         .from('usuarios')
                         .insert([{ nombre, cargo, terminal }])
                         .select();
-                    
+
                     if (insertError) throw insertError;
-                    
+
                     if (!newUser || newUser.length === 0) {
                         throw new Error('Error al crear usuario');
                     }
-                    
+
                     userId = newUser[0].id;
                 }
-                
+
                 // Guardar datos de usuario
                 currentUser = {
                     id: userId,
@@ -1299,15 +1581,15 @@
                     cargo: cargo,
                     terminal: terminal
                 };
-                
+
                 if (recordar) {
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 }
-                
+
                 setUserInfo(currentUser);
                 showMainApp();
                 await loadUserData();
-                
+
                 showAlert('Sesión iniciada correctamente', 'success');
             } catch (error) {
                 console.error('Error al iniciar sesión:', error);
@@ -1320,7 +1602,7 @@
         // Cerrar sesión
         function handleLogout() {
             loader.style.display = 'flex';
-            
+
             setTimeout(() => {
                 localStorage.removeItem('currentUser');
                 currentUser = null;
@@ -1334,20 +1616,20 @@
         // Configurar información del usuario
         function setUserInfo(user) {
             const initials = getInitials(user.nombre);
-            
+
             // Avatar y datos de usuario
             document.getElementById('userAvatar').textContent = initials;
             document.getElementById('userName').textContent = user.nombre;
             document.getElementById('userRole').textContent = user.cargo;
             document.getElementById('userTerminal').textContent = user.terminal;
-            
+
             // Campo en formulario de solicitudes
             document.getElementById('solicitudNombre').textContent = user.nombre;
-            
+
             // Configurar opciones de tarea según el cargo
             const selectTarea = document.getElementById('tareaRealizada');
             selectTarea.innerHTML = '';
-            
+
             if (user.cargo === 'Cleaner') {
                 const opciones = ['Barrido', 'Barrido trapeado', 'Full por inspección', 'Full a solicitud', 'Full en seco'];
                 opciones.forEach(opcion => {
@@ -1389,7 +1671,7 @@
         // Cargar datos del usuario
         async function loadUserData() {
             loader.style.display = 'flex';
-            
+
             try {
                 // Cargar tareas asignadas
                 const { data: tareas, error: tareasError } = await supabaseClient
@@ -1397,30 +1679,30 @@
                     .select('*')
                     .eq('terminal', currentUser.terminal)
                     .order('created_at', { ascending: false });
-                
+
                 if (tareasError) throw tareasError;
-                
+
                 // Cargar registros de trabajo
                 const { data: registros, error: registrosError } = await supabaseClient
                     .from('registros_trabajo')
                     .select('*')
                     .eq('usuario_id', currentUser.id)
                     .order('created_at', { ascending: false });
-                
+
                 if (registrosError) throw registrosError;
-                
+
                 // Cargar solicitudes de insumos
                 const { data: solicitudes, error: solicitudesError } = await supabaseClient
                     .from('solicitudes_insumos')
                     .select('*')
                     .eq('usuario_id', currentUser.id)
                     .order('created_at', { ascending: false });
-                
+
                 if (solicitudesError) throw solicitudesError;
-                
+
                 // Obtener contadores
                 await updateCounters();
-                
+
                 // Renderizar datos
                 renderTareasAsignadas(tareas || []);
                 renderRegistros(registros || []);
@@ -1435,15 +1717,386 @@
             }
         }
 
+        // Lista completa de la flota de buses
+        const FLOTA_COMPLETA = [
+            "LXWP57", "LXWP58", "LXWP59", "LXWP60", "LXWP61", "LXWP62", "LXWP64", "LXWP66", "LXWP67", "LXWP68", "LXWP69", "LXWP70",
+            "LXWP71", "LXWP72", "LXWP73", "LXWP74", "LXWP75", "LXWP76", "LXWP77", "LXWP78", "LXWP79", "LXWP80", "LXWP81", "LXWP82",
+            "LXWP83", "LXWP85", "LXWP86", "LXWP87", "PFTV77", "PFTW19", "PFTW20", "PFTW25", "PFTW26", "PFTW28", "PFTW29", "PFTW30",
+            "PFTW31", "PFTW32", "PFTW34", "PFTW35", "PFTW36", "PFTW38", "PFTW39", "PFTW40", "PFTW41", "PFTW42", "PFTW44", "PFTW45",
+            "PFTW46", "PFTW47", "PFTW48", "PFTW49", "PFTW50", "PFTW51", "PFTW55", "PFTW56", "PFTW57", "PFTW58", "PFTW59", "PFTW60",
+            "PFTW61", "PFTW62", "PFVG75", "PFVG76", "PFVG77", "PFVG78", "PFVG79", "PFVG80", "PFVG82", "PFVG83", "PFVG85", "PFVG86",
+            "PFVG87", "PFVG88", "PFVG89", "PFVG90", "PFVG92", "PFVG94", "PFVG95", "PFVG96", "PFVG97", "PFVG98", "PFVG99", "PFVH10",
+            "PFVH11", "PFVH12", "PFVH13", "PFVH14", "PFVH15", "PFYC13", "PFYC14", "PFYC16", "PFYC17", "PFYC19", "PFYC20", "PFYC25",
+            "PFYC26", "PFYC27", "PFYC28", "PFYC29", "PFYC31", "PFYC32", "PFYC33", "PFYC34", "PFYC35", "PFYC36", "PFYC37", "PFYC43",
+            "PFYC44", "PFYC46", "PFYC49", "PFYC50", "PFYC53", "PFYC55", "PFYC57", "PFYC58", "PFYC60", "PFYC61", "PFYC64", "PFYC65",
+            "PFYC66", "PFYC68", "PFYC69", "PFYC70", "PFYC72", "PFYC75", "PFYC76", "PFYC77", "PFYC79", "PFYC80", "PFYC81", "PFYC85",
+            "PFYC88", "PFYC90", "PFZK83", "PFZK91", "PGBF59", "PGBY67", "PGBY72", "PGBY73", "PGBY83", "PGKP67", "PGLD42", "PGLD67",
+            "PGRZ67", "PGTT95", "PGTV12", "PGWT98", "SHCV78", "SHCV83", "SHCX39", "SHCY22", "SHCY28", "SHXD75", "SHXD77", "SHXD79",
+            "SHXD85", "SHXF13", "SHXF14", "SHXF29", "SHXF31", "SHXF84", "SHXF85", "SHXF87", "SHXF88", "SHXF90", "SHXF92", "SHXF93",
+            "SHXF97", "SHXG36", "SHXG38", "SJPB21", "SJPB25", "SJPC73", "SJPD42", "SJPD44", "SJPD71", "SJPD72", "SJPD97", "SJPF43",
+            "SJPF44", "SKPH70", "SKPH73", "SKPJ90", "SKPK18", "SKPK19", "SKPK20", "SKPK21", "SKPK22", "SKPK23", "SKPK25", "SKPK26",
+            "SKPK27", "SKPK28", "SKPK31", "SKPK32", "SKPK34", "SKPK35", "SKPK37", "SKPK39", "SKPK40", "SKPK42", "SKPK44", "SKPK45",
+            "SKPK62", "SKPK63", "SKPL28", "SKPL30", "SKPL33", "SKPL34", "SKPL36"
+        ];
+
+        // Variable para almacenar los datos de la flota pendiente 
+        let flotaPendienteDatos = [];
+
+        // Función para mostrar la ventana flotante con la flota pendiente
+        async function mostrarFlotaPendiente() {
+            const modal = document.getElementById('modalFlotaPendiente');
+            const tbody = document.querySelector('#tablaFlotaPendiente tbody');
+            const sinResultados = document.getElementById('sinResultados');
+            const contadorPendientes = document.getElementById('contadorPendientes');
+
+            // Mostrar loader o indicador de carga
+            modal.classList.add('show');
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center">Cargando datos...</td></tr>';
+
+            try {
+                // Obtener todos los registros de limpieza (tanto de Cleaner como de Conductor)
+                const { data: registrosLimpieza, error: registrosError } = await supabaseClient
+                    .from('registros_trabajo')
+                    .select('ppu, trabajo, fecha, created_at')
+                    .order('created_at', { ascending: false });
+
+                if (registrosError) throw registrosError;
+
+                // Procesar cada bus de la flota
+                flotaPendienteDatos = [];
+
+                // Crear un objeto con la última limpieza de cada bus
+                const ultimasLimpiezas = {};
+                registrosLimpieza.forEach(reg => {
+                    // Si no existe registro previo para este bus o este es más reciente
+                    if (!ultimasLimpiezas[reg.ppu] || new Date(reg.created_at) > new Date(ultimasLimpiezas[reg.ppu].created_at)) {
+                        ultimasLimpiezas[reg.ppu] = reg;
+                    }
+                });
+
+                // Verificar cada bus de la flota
+                FLOTA_COMPLETA.forEach(ppu => {
+                    // Si no hay registro de limpieza para este bus
+                    if (!ultimasLimpiezas[ppu]) {
+                        flotaPendienteDatos.push({
+                            ppu: ppu,
+                            estado: 'Pendiente',
+                            ultimaLimpieza: 'Nunca',
+                            fechaUltima: null
+                        });
+                    } else {
+                        // Verificar si han pasado más de X días desde la última limpieza
+                        const fechaUltimaLimpieza = new Date(ultimasLimpiezas[ppu].created_at);
+                        const ahora = new Date();
+                        const diasTranscurridos = Math.floor((ahora - fechaUltimaLimpieza) / (1000 * 60 * 60 * 24));
+
+                        // Si han pasado más de 1 día, consideramos pendiente
+                        // Ajustar este valor según tus necesidades
+                        if (diasTranscurridos > 1) {
+                            flotaPendienteDatos.push({
+                                ppu: ppu,
+                                estado: 'Pendiente',
+                                ultimaLimpieza: ultimasLimpiezas[ppu].fecha || formatDate(fechaUltimaLimpieza),
+                                fechaUltima: fechaUltimaLimpieza
+                            });
+                        }
+                    }
+                });
+
+                // Ordenar: primero los que nunca se han limpiado, luego por fecha (más antiguos primero)
+                flotaPendienteDatos.sort((a, b) => {
+                    if (a.ultimaLimpieza === 'Nunca' && b.ultimaLimpieza !== 'Nunca') return -1;
+                    if (a.ultimaLimpieza !== 'Nunca' && b.ultimaLimpieza === 'Nunca') return 1;
+                    if (a.fechaUltima && b.fechaUltima) return a.fechaUltima - b.fechaUltima;
+                    return 0;
+                });
+
+                // Actualizar contador
+                contadorPendientes.textContent = flotaPendienteDatos.length;
+
+                // Mostrar la lista de buses pendientes
+                renderizarTabla(flotaPendienteDatos, tbody, sinResultados);
+
+            } catch (error) {
+                console.error('Error al cargar la flota pendiente:', error);
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Error al cargar datos</td></tr>';
+            }
+        }
+
+
+        // Función para implementar autocompletado en el campo PPU
+        function inicializarAutocompletadoPPU() {
+            const ppuInput = document.getElementById('ppu');
+
+            // Crear el contenedor de sugerencias
+            const suggestionsContainer = document.createElement('div');
+            suggestionsContainer.className = 'autocomplete-suggestions';
+            ppuInput.parentNode.style.position = 'relative';
+            ppuInput.parentNode.appendChild(suggestionsContainer);
+
+            // Agregar estilos CSS para el contenedor de sugerencias
+            const style = document.createElement('style');
+            style.textContent = `
+        .autocomplete-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+        }
+        .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .suggestion-item:hover, .suggestion-item.active {
+            background-color: var(--primary-light);
+        }
+        .no-suggestions {
+            padding: 8px 12px;
+            color: #888;
+            font-style: italic;
+        }
+    `;
+            document.head.appendChild(style);
+
+            // Variable para rastrear el ítem seleccionado actualmente
+            let selectedIndex = -1;
+
+            // Función para mostrar sugerencias basadas en el texto actual
+            function mostrarSugerencias(texto) {
+                // Convertir a mayúsculas
+                texto = texto.toUpperCase();
+                ppuInput.value = texto;
+
+                // Filtrar la flota basada en el texto
+                const sugerencias = FLOTA_COMPLETA.filter(ppu => ppu.includes(texto));
+
+                // Mostrar los resultados
+                if (texto.length > 0 && sugerencias.length > 0) {
+                    suggestionsContainer.innerHTML = '';
+                    suggestionsContainer.style.display = 'block';
+
+                    // Limitar a 10 sugerencias para no sobrecargar la UI
+                    const limitedSuggestions = sugerencias.slice(0, 10);
+
+                    limitedSuggestions.forEach((sugerencia, index) => {
+                        const item = document.createElement('div');
+                        item.className = 'suggestion-item';
+                        item.textContent = sugerencia;
+
+                        // Resaltar la parte coincidente
+                        if (texto.length > 0) {
+                            const highlightedText = sugerencia.replace(
+                                new RegExp(texto, 'gi'),
+                                match => `<strong>${match}</strong>`
+                            );
+                            item.innerHTML = highlightedText;
+                        }
+
+                        item.addEventListener('click', () => {
+                            ppuInput.value = sugerencia;
+                            cerrarSugerencias();
+                            ppuInput.focus();
+                        });
+
+                        suggestionsContainer.appendChild(item);
+                    });
+
+                    // Reiniciar el índice seleccionado
+                    selectedIndex = -1;
+                } else {
+                    cerrarSugerencias();
+                }
+            }
+
+            // Función para cerrar el panel de sugerencias
+            function cerrarSugerencias() {
+                suggestionsContainer.style.display = 'none';
+                selectedIndex = -1;
+            }
+
+            // Event listener para el campo de entrada
+            ppuInput.addEventListener('input', () => {
+                mostrarSugerencias(ppuInput.value);
+            });
+
+            // Manejar las teclas de navegación
+            ppuInput.addEventListener('keydown', (e) => {
+                const items = suggestionsContainer.querySelectorAll('.suggestion-item');
+
+                // Flecha abajo
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (suggestionsContainer.style.display === 'block') {
+                        selectedIndex = (selectedIndex + 1) % items.length;
+                        actualizarSeleccion(items);
+                    }
+                }
+                // Flecha arriba
+                else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (suggestionsContainer.style.display === 'block') {
+                        selectedIndex = selectedIndex <= 0 ? items.length - 1 : selectedIndex - 1;
+                        actualizarSeleccion(items);
+                    }
+                }
+                // Enter - seleccionar sugerencia actual
+                else if (e.key === 'Enter' && selectedIndex >= 0) {
+                    e.preventDefault();
+                    if (items[selectedIndex]) {
+                        ppuInput.value = items[selectedIndex].textContent;
+                        cerrarSugerencias();
+                    }
+                }
+                // Escape - cerrar sugerencias
+                else if (e.key === 'Escape') {
+                    cerrarSugerencias();
+                }
+            });
+
+            // Actualizar la visualización del elemento seleccionado
+            function actualizarSeleccion(items) {
+                for (let i = 0; i < items.length; i++) {
+                    items[i].classList.remove('active');
+                }
+                if (selectedIndex >= 0 && items[selectedIndex]) {
+                    items[selectedIndex].classList.add('active');
+                    // Scroll a la vista si es necesario
+                    items[selectedIndex].scrollIntoView({ block: 'nearest' });
+                }
+            }
+
+            // Cerrar las sugerencias si se hace clic fuera
+            document.addEventListener('click', (e) => {
+                if (e.target !== ppuInput && !suggestionsContainer.contains(e.target)) {
+                    cerrarSugerencias();
+                }
+            });
+
+            // Convertir a mayúsculas siempre
+            ppuInput.addEventListener('keyup', () => {
+                ppuInput.value = ppuInput.value.toUpperCase();
+            });
+
+            // Forzar mayúsculas al pegar texto
+            ppuInput.addEventListener('paste', (e) => {
+                setTimeout(() => {
+                    ppuInput.value = ppuInput.value.toUpperCase();
+                    mostrarSugerencias(ppuInput.value);
+                }, 0);
+            });
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', () => {
+            inicializarAutocompletadoPPU();
+        });
+
+        // Función para renderizar la tabla de flota pendiente
+        function renderizarTabla(datos, tbody, sinResultados) {
+            tbody.innerHTML = '';
+
+            if (datos.length === 0) {
+                sinResultados.classList.remove('hidden');
+                return;
+            }
+
+            sinResultados.classList.add('hidden');
+
+            // Llenar la tabla
+            datos.forEach(bus => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+            <td>${bus.ppu}</td>
+            <td><span class="badge badge-pendiente">${bus.estado}</span></td>
+            <td>${bus.ultimaLimpieza}</td>
+        `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Función para filtrar la tabla por PPU
+        function filtrarTabla(busqueda) {
+            const tbody = document.querySelector('#tablaFlotaPendiente tbody');
+            const sinResultados = document.getElementById('sinResultados');
+
+            if (!flotaPendienteDatos || flotaPendienteDatos.length === 0) return;
+
+            if (!busqueda.trim()) {
+                // Si no hay texto de búsqueda, mostrar todos
+                renderizarTabla(flotaPendienteDatos, tbody, sinResultados);
+                return;
+            }
+
+            // Filtrar los datos
+            const busquedaUpper = busqueda.trim().toUpperCase();
+            const datosFiltrados = flotaPendienteDatos.filter(bus =>
+                bus.ppu.includes(busquedaUpper)
+            );
+
+            // Actualizar tabla con resultados filtrados
+            renderizarTabla(datosFiltrados, tbody, sinResultados);
+        }
+
+        // Formatear fecha para mostrar en la tabla
+        function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = String(date.getFullYear()).slice(2);
+            return `${day}-${month}-${year}`;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnMostrarFlota = document.getElementById('btnMostrarFlotaPendiente');
+            const btnCerrarModal = document.getElementById('btnCerrarModal');
+            const modal = document.getElementById('modalFlotaPendiente');
+            const closeModalX = document.querySelector('.close-modal');
+            const buscarPPU = document.getElementById('buscarPPU');
+
+            // Abrir modal al hacer clic en el botón
+            btnMostrarFlota.addEventListener('click', mostrarFlotaPendiente);
+
+            // Cerrar modal al hacer clic en el botón cerrar
+            btnCerrarModal.addEventListener('click', () => {
+                modal.classList.remove('show');
+            });
+
+            // Cerrar modal al hacer clic en la X
+            closeModalX.addEventListener('click', () => {
+                modal.classList.remove('show');
+            });
+
+            // Cerrar modal al hacer clic fuera del contenido
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+
+            // Filtrar tabla al escribir en el campo de búsqueda
+            buscarPPU.addEventListener('input', (e) => {
+                filtrarTabla(e.target.value);
+            });
+        });
+
         // Renderizar tareas asignadas
         function renderTareasAsignadas(tareas) {
             const tbody = document.querySelector('#tableTareasAsignadas tbody');
             tbody.innerHTML = '';
-            
+
             // Solo mostrar tareas pendientes en esta tabla
             const tareasPendientes = tareas.filter(tarea => tarea.estado === 'Pendiente');
             const paginatedTareas = paginateData(tareasPendientes, tareasPaginaActual, itemsPorPagina);
-            
+
             if (paginatedTareas.length === 0) {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `<td colspan="4" class="text-center">No hay tareas pendientes</td>`;
@@ -1467,13 +2120,13 @@
                     `;
                     tbody.appendChild(tr);
                 });
-                
+
                 // Agregar event listeners a los selectores de estado
                 document.querySelectorAll('.status-select').forEach(select => {
                     select.addEventListener('change', handleTareaStatusChange);
                 });
             }
-            
+
             renderPagination('paginationTareasAsignadas', tareasPendientes.length, tareasPaginaActual, (page) => {
                 tareasPaginaActual = page;
                 renderTareasAsignadas(tareas);
@@ -1484,9 +2137,9 @@
         function renderRegistros(registros) {
             const tbody = document.querySelector('#tableRegistros tbody');
             tbody.innerHTML = '';
-            
+
             const paginatedRegistros = paginateData(registros, registrosPaginaActual, itemsPorPagina);
-            
+
             if (paginatedRegistros.length === 0) {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `<td colspan="3" class="text-center">No hay registros</td>`;
@@ -1502,7 +2155,7 @@
                     tbody.appendChild(tr);
                 });
             }
-            
+
             renderPagination('paginationRegistros', registros.length, registrosPaginaActual, (page) => {
                 registrosPaginaActual = page;
                 renderRegistros(registros);
@@ -1513,14 +2166,14 @@
         function renderHistorialTareas(tareas) {
             const tbody = document.querySelector('#historialTareas tbody');
             tbody.innerHTML = '';
-            
+
             // Filtrar tareas completadas o canceladas
-            const completedTareas = tareas.filter(tarea => 
+            const completedTareas = tareas.filter(tarea =>
                 tarea.estado === 'Realizado' || tarea.estado === 'Cancelado'
             );
-            
+
             const paginatedTareas = paginateData(completedTareas, historialTareasPaginaActual, itemsPorPagina);
-            
+
             if (paginatedTareas.length === 0) {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `<td colspan="4" class="text-center">No hay tareas completadas</td>`;
@@ -1529,7 +2182,7 @@
                 paginatedTareas.forEach(tarea => {
                     const tr = document.createElement('tr');
                     const fecha = new Date(tarea.updated_at).toLocaleDateString('es-CL');
-                    
+
                     tr.innerHTML = `
                         <td>${tarea.ppu}</td>
                         <td>${tarea.tarea}</td>
@@ -1539,7 +2192,7 @@
                     tbody.appendChild(tr);
                 });
             }
-            
+
             renderPagination('paginationHistorialTareas', completedTareas.length, historialTareasPaginaActual, (page) => {
                 historialTareasPaginaActual = page;
                 renderHistorialTareas(tareas);
@@ -1550,9 +2203,9 @@
         function renderHistorialTrabajos(registros) {
             const tbody = document.querySelector('#historialTrabajos tbody');
             tbody.innerHTML = '';
-            
+
             const paginatedTrabajos = paginateData(registros, historialTrabajosPaginaActual, itemsPorPagina);
-            
+
             if (paginatedTrabajos.length === 0) {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `<td colspan="3" class="text-center">No hay trabajos realizados</td>`;
@@ -1568,7 +2221,7 @@
                     tbody.appendChild(tr);
                 });
             }
-            
+
             renderPagination('paginationHistorialTrabajos', registros.length, historialTrabajosPaginaActual, (page) => {
                 historialTrabajosPaginaActual = page;
                 renderHistorialTrabajos(registros);
@@ -1579,9 +2232,9 @@
         function renderHistorialSolicitudes(solicitudes) {
             const tbody = document.querySelector('#historialSolicitudes tbody');
             tbody.innerHTML = '';
-            
+
             const paginatedSolicitudes = paginateData(solicitudes, historialSolicitudesPaginaActual, itemsPorPagina);
-            
+
             if (paginatedSolicitudes.length === 0) {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `<td colspan="3" class="text-center">No hay solicitudes</td>`;
@@ -1597,7 +2250,7 @@
                     tbody.appendChild(tr);
                 });
             }
-            
+
             renderPagination('paginationHistorialSolicitudes', solicitudes.length, historialSolicitudesPaginaActual, (page) => {
                 historialSolicitudesPaginaActual = page;
                 renderHistorialSolicitudes(solicitudes);
@@ -1608,21 +2261,21 @@
         async function handleTareaStatusChange(e) {
             const tareaId = e.target.getAttribute('data-id');
             const nuevoEstado = e.target.value;
-            
+
             loader.style.display = 'flex';
-            
+
             try {
                 // Actualizar en Supabase
                 const { error } = await supabaseClient
                     .from('tareas_asignadas')
-                    .update({ 
+                    .update({
                         estado: nuevoEstado,
                         updated_at: new Date()
                     })
                     .eq('id', tareaId);
-                
+
                 if (error) throw error;
-                
+
                 // Si se marca como realizado, agregar a registros
                 if (nuevoEstado === 'Realizado') {
                     // Obtener la tarea
@@ -1631,34 +2284,34 @@
                         .select('*')
                         .eq('id', tareaId)
                         .single();
-                    
+
                     if (tareaError) throw tareaError;
-                    
+
                     if (tarea) {
                         const ahora = new Date();
                         const fechaFormateada = formatDate(ahora);
-                        
+
                         // Insertar en registros_trabajo
                         const { error: regError } = await supabaseClient
                             .from('registros_trabajo')
                             .insert([
-                                { 
-                                    ppu: tarea.ppu, 
-                                    trabajo: tarea.tarea, 
+                                {
+                                    ppu: tarea.ppu,
+                                    trabajo: tarea.tarea,
                                     fecha: fechaFormateada,
                                     usuario_id: currentUser.id,
                                     nombre_usuario: currentUser.nombre,
                                     terminal: currentUser.terminal
                                 }
                             ]);
-                        
+
                         if (regError) throw regError;
                     }
                 }
-                
+
                 // Recargar datos
                 await loadUserData();
-                
+
                 showAlert(`Tarea actualizada a ${nuevoEstado}`, 'success');
             } catch (error) {
                 console.error('Error al actualizar tarea:', error);
@@ -1671,53 +2324,53 @@
         // Manejar registro de trabajo
         async function handleRegistro(e) {
             e.preventDefault();
-            
+
             const ppu = document.getElementById('ppu').value.trim().toUpperCase();
             const tareaRealizada = document.getElementById('tareaRealizada').value;
-            
+
             if (!ppu || !tareaRealizada) {
                 showAlert('Por favor complete todos los campos', 'warning');
                 return;
             }
-            
+
             // Validar formato de PPU (ejemplo: ABCD12)
             const ppuRegex = /^[A-Z]{2,4}\d{2,3}$/;
             if (!ppuRegex.test(ppu)) {
                 showAlert('Formato de PPU inválido. Debe ser como ABCD12', 'danger');
                 return;
             }
-            
+
             loader.style.display = 'flex';
-            
+
             try {
                 const ahora = new Date();
                 const fechaFormateada = formatDate(ahora);
-                
+
                 // Insertar en Supabase
                 const { error } = await supabaseClient
                     .from('registros_trabajo')
                     .insert([
-                        { 
-                            ppu: ppu, 
-                            trabajo: tareaRealizada, 
+                        {
+                            ppu: ppu,
+                            trabajo: tareaRealizada,
                             fecha: fechaFormateada,
                             usuario_id: currentUser.id,
                             nombre_usuario: currentUser.nombre,
                             terminal: currentUser.terminal
                         }
                     ]);
-                
+
                 if (error) throw error;
-                
+
                 // Recargar datos
                 await loadUserData();
-                
+
                 // Limpiar formulario
                 document.getElementById('registroForm').reset();
-                
+
                 // Reconfigurar opciones según cargo
                 setUserInfo(currentUser);
-                
+
                 showAlert('Trabajo registrado correctamente', 'success');
             } catch (error) {
                 console.error('Error al registrar trabajo:', error);
@@ -1730,25 +2383,25 @@
         // Manejar solicitud de insumos
         async function handleSolicitud(e) {
             e.preventDefault();
-            
+
             const insumo = document.getElementById('insumoSolicitado').value.trim();
-            
+
             if (!insumo) {
                 showAlert('Por favor ingrese el nombre del insumo', 'warning');
                 return;
             }
-            
+
             loader.style.display = 'flex';
-            
+
             try {
                 const ahora = new Date();
                 const fechaFormateada = formatDate(ahora);
-                
+
                 // Insertar en Supabase
                 const { error } = await supabaseClient
                     .from('solicitudes_insumos')
                     .insert([
-                        { 
+                        {
                             insumo: insumo,
                             usuario_id: currentUser.id,
                             nombre_usuario: currentUser.nombre,
@@ -1756,21 +2409,21 @@
                             estado: 'Pendiente'
                         }
                     ]);
-                
+
                 if (error) throw error;
-                
+
                 // Recargar datos
                 const { data: solicitudes } = await supabaseClient
                     .from('solicitudes_insumos')
                     .select('*')
                     .eq('usuario_id', currentUser.id)
                     .order('created_at', { ascending: false });
-                
+
                 renderHistorialSolicitudes(solicitudes || []);
-                
+
                 // Limpiar formulario
                 document.getElementById('solicitudForm').reset();
-                
+
                 showAlert('Solicitud enviada correctamente', 'success');
             } catch (error) {
                 console.error('Error al enviar solicitud:', error);
@@ -1783,25 +2436,57 @@
         // Actualizar contadores
         async function updateCounters() {
             try {
-                // Contar tareas pendientes en el terminal
-                const { count: tareasPendientes, error: countError } = await supabaseClient
-                    .from('tareas_asignadas')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('terminal', currentUser.terminal)
-                    .eq('estado', 'Pendiente');
-                
-                if (countError) throw countError;
-                
+                // Obtener todos los registros de limpieza
+                const { data: registrosLimpieza, error: registrosError } = await supabaseClient
+                    .from('registros_trabajo')
+                    .select('ppu, created_at')
+                    .order('created_at', { ascending: false });
+
+                if (registrosError) throw registrosError;
+
+                // Crear un objeto con la última limpieza de cada bus
+                const ultimasLimpiezas = {};
+
+                if (registrosLimpieza) {
+                    registrosLimpieza.forEach(reg => {
+                        // Si no existe registro previo para este bus o este es más reciente
+                        if (!ultimasLimpiezas[reg.ppu] || new Date(reg.created_at) > new Date(ultimasLimpiezas[reg.ppu].created_at)) {
+                            ultimasLimpiezas[reg.ppu] = reg;
+                        }
+                    });
+                }
+
+                // Contar buses pendientes
+                let busesPendientes = 0;
+
+                // Verificar cada bus de la flota
+                FLOTA_COMPLETA.forEach(ppu => {
+                    // Si no hay registro de limpieza para este bus
+                    if (!ultimasLimpiezas[ppu]) {
+                        busesPendientes++;
+                    } else {
+                        // Verificar si han pasado más de X días desde la última limpieza
+                        const fechaUltimaLimpieza = new Date(ultimasLimpiezas[ppu].created_at);
+                        const ahora = new Date();
+                        const diasTranscurridos = Math.floor((ahora - fechaUltimaLimpieza) / (1000 * 60 * 60 * 24));
+
+                        // Si han pasado más de 1 día, consideramos pendiente (ajustar según necesidad)
+                        if (diasTranscurridos > 1) {
+                            busesPendientes++;
+                        }
+                    }
+                });
+
                 // Contar trabajos realizados por el usuario
                 const { count: trabajosRealizados, error: workCountError } = await supabaseClient
                     .from('registros_trabajo')
                     .select('*', { count: 'exact', head: true })
                     .eq('usuario_id', currentUser.id);
-                
+
                 if (workCountError) throw workCountError;
-                
+
                 // Actualizar contadores
-                countPendientes.textContent = tareasPendientes || 0;
+                countPendientes.textContent = busesPendientes;
                 countRealizados.textContent = trabajosRealizados || 0;
             } catch (error) {
                 console.error('Error al actualizar contadores:', error);
@@ -1813,12 +2498,12 @@
             // Desactivar todas las pestañas y contenidos
             navLinks.forEach(link => link.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
-            
+
             // Activar la pestaña seleccionada
             document.querySelectorAll(`[data-target="${targetId}"]`).forEach(element => {
                 element.classList.add('active');
             });
-            
+
             // Activar el contenido seleccionado
             document.getElementById(targetId).classList.add('active');
         }
@@ -1852,19 +2537,19 @@
             if (type && !alertCheckboxes[type].checked) {
                 return;
             }
-            
+
             const alertContainer = document.getElementById('alertContainer');
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type}`;
             alertDiv.textContent = message;
-            
+
             alertContainer.appendChild(alertDiv);
-            
+
             // Remover después de 3 segundos
             setTimeout(() => {
                 alertDiv.style.opacity = '0';
                 alertDiv.style.transition = 'opacity 0.5s';
-                
+
                 setTimeout(() => {
                     alertContainer.removeChild(alertDiv);
                 }, 500);
@@ -1881,17 +2566,17 @@
         function renderPagination(containerId, totalItems, currentPage, callback) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
-            
+
             const totalPages = Math.ceil(totalItems / itemsPorPagina);
-            
+
             if (totalPages <= 1) {
                 return;
             }
-            
+
             // Crear lista
             const ul = document.createElement('ul');
             ul.className = 'pagination';
-            
+
             // Botón anterior
             const prevLi = document.createElement('li');
             prevLi.className = 'page-item';
@@ -1907,17 +2592,17 @@
             });
             prevLi.appendChild(prevLink);
             ul.appendChild(prevLi);
-            
+
             // Páginas (mostrar máximo 5)
             const maxVisiblePages = 5;
             let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
             let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-            
+
             // Ajustar si estamos cerca del final
             if (endPage - startPage + 1 < maxVisiblePages) {
                 startPage = Math.max(1, endPage - maxVisiblePages + 1);
             }
-            
+
             for (let i = startPage; i <= endPage; i++) {
                 const li = document.createElement('li');
                 li.className = 'page-item';
@@ -1935,7 +2620,7 @@
                 li.appendChild(link);
                 ul.appendChild(li);
             }
-            
+
             // Botón siguiente
             const nextLi = document.createElement('li');
             nextLi.className = 'page-item';
@@ -1951,18 +2636,18 @@
             });
             nextLi.appendChild(nextLink);
             ul.appendChild(nextLi);
-            
+
             container.appendChild(ul);
         }
 
         // Funciones de configuración
         function loadConfig() {
             const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
-            
+
             // Cargar tema de color
             if (config.colorTheme) {
                 applyColorTheme(config.colorTheme);
-                
+
                 // Activar la opción correspondiente
                 colorOptions.forEach(option => {
                     option.classList.remove('active');
@@ -1971,7 +2656,7 @@
                     }
                 });
             }
-            
+
             // Cargar configuración de alertas
             if (config.alerts) {
                 Object.keys(config.alerts).forEach(type => {
@@ -1992,13 +2677,13 @@
                     danger: alertCheckboxes.danger.checked
                 }
             };
-            
+
             localStorage.setItem('appConfig', JSON.stringify(config));
         }
 
         function applyColorTheme(themeName) {
             const theme = colorThemes[themeName];
-            
+
             if (theme) {
                 document.documentElement.style.setProperty('--primary-color', theme.primaryColor);
                 document.documentElement.style.setProperty('--primary-dark', theme.primaryDark);
@@ -2012,4 +2697,5 @@
         });
     </script>
 </body>
+
 </html>
