@@ -1068,15 +1068,10 @@
         </nav>
     </div>
 
-    <!-- Load Supabase from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Load Supabase directly from unpkg without module -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
     <script>
-        // Inicialización de Supabase
-        const SUPABASE_URL = 'https://tcmtxvuucjttngcazgff.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjbXR4dnV1Y2p0dG5nY2F6Z2ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3MjUwMDEsImV4cCI6MjA1NjMwMTAwMX0.2WcIjMUEhSM6j9kYpbsYArQocZdHx86k7wXk-NyjIs0';
-        const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_KEY);
-
         // Variables globales
         let currentUser = null;
         let tareasPaginaActual = 1;
@@ -1085,6 +1080,7 @@
         let historialTrabajosPaginaActual = 1;
         let historialSolicitudesPaginaActual = 1;
         let itemsPorPagina = 10;
+        let supabaseClient = null;
 
         // Configuración de tema
         const colorThemes = {
@@ -1140,6 +1136,9 @@
 
         async function init() {
             try {
+                // Inicializar Supabase
+                initSupabase();
+                
                 // Cargar configuración desde localStorage
                 loadConfig();
                 
@@ -1190,6 +1189,15 @@
             }
         }
 
+        // Inicializar Supabase
+        function initSupabase() {
+            const SUPABASE_URL = 'https://tcmtxvuucjttngcazgff.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjbXR4dnV1Y2p0dG5nY2F6Z2ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3MjUwMDEsImV4cCI6MjA1NjMwMTAwMX0.2WcIjMUEhSM6j9kYpbsYArQocZdHx86k7wXk-NyjIs0';
+            
+            // Crear cliente Supabase usando la API global expuesta por el CDN
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+
         // Verificar sesión guardada
         async function checkSession() {
             const savedUser = localStorage.getItem('currentUser');
@@ -1198,7 +1206,7 @@
                     currentUser = JSON.parse(savedUser);
                     
                     // Verificar si el usuario existe en Supabase
-                    const { data, error } = await supabase
+                    const { data, error } = await supabaseClient
                         .from('usuarios')
                         .select('*')
                         .eq('id', currentUser.id)
@@ -1248,7 +1256,7 @@
             
             try {
                 // Buscar o crear usuario en Supabase
-                let { data: usuarios, error } = await supabase
+                let { data: usuarios, error } = await supabaseClient
                     .from('usuarios')
                     .select('*')
                     .eq('nombre', nombre)
@@ -1262,7 +1270,7 @@
                     // Usuario existe, actualizar terminal
                     userId = usuarios[0].id;
                     
-                    const { error: updateError } = await supabase
+                    const { error: updateError } = await supabaseClient
                         .from('usuarios')
                         .update({ terminal: terminal })
                         .eq('id', userId);
@@ -1270,7 +1278,7 @@
                     if (updateError) throw updateError;
                 } else {
                     // Crear nuevo usuario
-                    const { data: newUser, error: insertError } = await supabase
+                    const { data: newUser, error: insertError } = await supabaseClient
                         .from('usuarios')
                         .insert([{ nombre, cargo, terminal }])
                         .select();
@@ -1384,7 +1392,7 @@
             
             try {
                 // Cargar tareas asignadas
-                const { data: tareas, error: tareasError } = await supabase
+                const { data: tareas, error: tareasError } = await supabaseClient
                     .from('tareas_asignadas')
                     .select('*')
                     .eq('terminal', currentUser.terminal)
@@ -1393,7 +1401,7 @@
                 if (tareasError) throw tareasError;
                 
                 // Cargar registros de trabajo
-                const { data: registros, error: registrosError } = await supabase
+                const { data: registros, error: registrosError } = await supabaseClient
                     .from('registros_trabajo')
                     .select('*')
                     .eq('usuario_id', currentUser.id)
@@ -1402,7 +1410,7 @@
                 if (registrosError) throw registrosError;
                 
                 // Cargar solicitudes de insumos
-                const { data: solicitudes, error: solicitudesError } = await supabase
+                const { data: solicitudes, error: solicitudesError } = await supabaseClient
                     .from('solicitudes_insumos')
                     .select('*')
                     .eq('usuario_id', currentUser.id)
@@ -1605,7 +1613,7 @@
             
             try {
                 // Actualizar en Supabase
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('tareas_asignadas')
                     .update({ 
                         estado: nuevoEstado,
@@ -1618,7 +1626,7 @@
                 // Si se marca como realizado, agregar a registros
                 if (nuevoEstado === 'Realizado') {
                     // Obtener la tarea
-                    const { data: tarea, error: tareaError } = await supabase
+                    const { data: tarea, error: tareaError } = await supabaseClient
                         .from('tareas_asignadas')
                         .select('*')
                         .eq('id', tareaId)
@@ -1631,7 +1639,7 @@
                         const fechaFormateada = formatDate(ahora);
                         
                         // Insertar en registros_trabajo
-                        const { error: regError } = await supabase
+                        const { error: regError } = await supabaseClient
                             .from('registros_trabajo')
                             .insert([
                                 { 
@@ -1686,7 +1694,7 @@
                 const fechaFormateada = formatDate(ahora);
                 
                 // Insertar en Supabase
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('registros_trabajo')
                     .insert([
                         { 
@@ -1737,7 +1745,7 @@
                 const fechaFormateada = formatDate(ahora);
                 
                 // Insertar en Supabase
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('solicitudes_insumos')
                     .insert([
                         { 
@@ -1752,7 +1760,7 @@
                 if (error) throw error;
                 
                 // Recargar datos
-                const { data: solicitudes } = await supabase
+                const { data: solicitudes } = await supabaseClient
                     .from('solicitudes_insumos')
                     .select('*')
                     .eq('usuario_id', currentUser.id)
@@ -1776,7 +1784,7 @@
         async function updateCounters() {
             try {
                 // Contar tareas pendientes en el terminal
-                const { count: tareasPendientes, error: countError } = await supabase
+                const { count: tareasPendientes, error: countError } = await supabaseClient
                     .from('tareas_asignadas')
                     .select('*', { count: 'exact', head: true })
                     .eq('terminal', currentUser.terminal)
@@ -1785,7 +1793,7 @@
                 if (countError) throw countError;
                 
                 // Contar trabajos realizados por el usuario
-                const { count: trabajosRealizados, error: workCountError } = await supabase
+                const { count: trabajosRealizados, error: workCountError } = await supabaseClient
                     .from('registros_trabajo')
                     .select('*', { count: 'exact', head: true })
                     .eq('usuario_id', currentUser.id);
